@@ -22,7 +22,6 @@
           {
             display: inline-block;
             margin-right: 2px;
-            fill: teal;
           }
 
   </style>
@@ -30,10 +29,18 @@
     <body>
       <div id='chartArea'></div>
       <script type="text/javascript">
-        var dataset = [ 5, 10, 15, 20, 25, 40, 36];
+        // var dataset = [ 5, 10, 15, 20, 25, 40, 36];
         // var dataset = _.map(_.range(15), function (i ) {
         //   return Math.random() * 5000;
         // });
+
+        function randomIntInc (low, high) {
+            return Math.floor(Math.random() * (high - low + 1) + low);
+        }
+        var dataset = new Array(100)
+        for (var i = 0; i < dataset.length; i++){
+          dataset[i] = randomIntInc(1,100)
+        }
         var w = 400, h = 300;
 
         var svg = d3.select('#chartArea').append('svg')
@@ -44,6 +51,15 @@
         .domain([0, d3.max(dataset) * 1.1])
         .range([0, h]);
 
+        var colorScale = d3.scale.linear()
+        .domain([0, d3.max(dataset)])
+        .range(['orange', 'purple']);
+
+        var xScale = d3.scale.ordinal()
+          .domain(dataset)
+          .rangeBands([0, w], 0.1, 0.3);
+        // Second argument above is padding between bands, Third argument is padding outside the bands
+
 
         var multiplier = 3;
 
@@ -53,15 +69,16 @@
           .append('rect')
           .attr('class', 'bar')
           .attr('x', function (d, i) {
-            return i * 22;
+            return xScale(d);
           })
           .attr('y', function (d) {
             return h - yScale(d)
           })
-          .attr('width', 20)
+          .attr('width', xScale.rangeBand())
           .attr('height', function (d) {
             return yScale(d);
-          });
+          })
+          .attr('fill', colorScale);
 
       </script>
     </body>
