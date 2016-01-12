@@ -52,7 +52,7 @@
         .range([0, h]);
 
         var colorScale = d3.scale.linear()
-        .domain([0, d3.max(dataset)])
+        .domain([0, dataset.length])
         .range(['orange', 'purple']);
 
         var xScale = d3.scale.ordinal()
