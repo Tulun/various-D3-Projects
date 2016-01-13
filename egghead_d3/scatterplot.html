@@ -46,14 +46,8 @@
 <button onclick="update()">Update</button>
 <script type="text/javascript">
 
-    function update() {
-      _.each(dataset, function (datum) {
-        datum.x = Math.round(Math.random() * 100)
-        datum.y = Math.round(Math.random() * 100)
-        datum.r = Math.round(5 + Math.random() * 10)
-       })
-
-      svg.selectAll('circle')
+    function steppedTransition (selection) {
+      selection
         .transition()
         .duration(500)
         .attr('cx', function (d) {
@@ -72,6 +66,47 @@
           return d.r;
         })
         .style('fill', 'purple');
+    }
+
+
+    // Allow for the plain transition duration to vary.
+    function plainTransition (selection, dur) {
+      selection
+        .transition()
+        .duration(dur)
+        .attr('cx', function (d) {
+          return xScale(d.x);
+        })
+        .attr('cy', function (d) {
+          return yScale(d.y);
+        })
+        .attr('r', function (d) {
+          return d.r;
+        })
+        .style('fill', 'purple');
+    }
+
+    function newData (datum) {
+      datum.x = Math.round(Math.random() * 100);
+      datum.y = Math.round(Math.random() * 100);
+      datum.r = Math.round(5 + Math.random() * 10);
+    }
+
+    function update() {
+
+      svg.selectAll('circle')
+        .filter(function(d) {
+          return d.x < 50;
+        })
+        .each(newData)
+        .call(plainTransition, 2000)
+
+      svg.selectAll('circle')
+        .filter(function(d) {
+          return d.x >= 50;
+        })
+        .each(newData)
+        .call(steppedTransition)
     }
 
     var dataset = _.map(_.range(25), function (i) {
