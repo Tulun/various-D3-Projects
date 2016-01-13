@@ -5,31 +5,12 @@
         <title>D3 Test</title>
         <script type="text/javascript" src="../d3/d3.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
-        <style type="text/css">
-
-          body
-          {
-            padding-top: 50px;
-            padding-left: 100px;
-          }
-
-          #chartArea {
-            width: 400px;
-            height: 300px;
-            background-color: #CCC;
-          }
-
-          .bar
-          {
-            display: inline-block;
-          }
-
-  </style>
+        <link rel='stylesheet' type='text/css' href='./css/bargraph.css'></link>
     </head>
+
     <body>
       <div id='chartArea'></div>
-      <script type="text/javascript">
-      
+      <script>
         var dataset = _.map(_.range(75), function (i ) {
           return Math.random() * 5000;
         });
@@ -77,6 +58,6 @@
           .attr('fill', function (d, i) {
             return colorScale(i);
           });
-      </script>
+  </script>
     </body>
 </html>
